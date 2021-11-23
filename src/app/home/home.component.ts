@@ -16,16 +16,11 @@ export class HomeComponent implements OnInit {
 
   beginnerCourses$: Observable<Course[]>;
 
-  beginnerCourse: Course[];
-
   advancedCourses$: Observable<Course[]>;
-
-  advancedCourse: Course[];
 
   constructor(
     private courses: CoursesService, 
     private dialog: MatDialog) {
-
   }
 
   ngOnInit() {
