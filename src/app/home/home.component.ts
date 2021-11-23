@@ -4,7 +4,7 @@ import {interval, noop, Observable, of, throwError, timer} from 'rxjs';
 import {catchError, delay, delayWhen, filter, finalize, map, retryWhen, shareReplay, tap} from 'rxjs/operators';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {CourseDialogComponent} from '../course-dialog/course-dialog.component';
-import { CoursesService } from '../services/courses.service';
+import { CoursesService } from '../services/courses.services';
 
 
 @Component({
@@ -14,18 +14,33 @@ import { CoursesService } from '../services/courses.service';
 })
 export class HomeComponent implements OnInit {
 
-  beginnerCourses: Course[];
+  beginnerCourses$: Observable<Course[]>;
 
-  advancedCourses: Course[];
+  advancedCourses$: Observable<Course[]>;
 
 
-  constructor(private courses: CoursesService, private dialog: MatDialog) {
+  constructor(
+    private courses: CoursesService, 
+    private dialog: MatDialog) {
 
   }
 
   ngOnInit() {
 
+    const courses$ = this.courses.loadAllCourses()
+      .pipe(
+        map(courses => courses.sort(sortCoursesBySeqNo))
+      );
 
+    this.beginnerCourses$ = courses$
+      .pipe(
+        map(courses => courses.filter(course => course.category == "BEGINNER"))
+      );
+
+    this.advancedCourses$ = courses$
+    .pipe(
+      map(courses => courses.filter(course => course.category == "ADVANCED"))
+    )
   }
 
   editCourse(course: Course) {
