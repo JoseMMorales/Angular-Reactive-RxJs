@@ -16,8 +16,11 @@ export class HomeComponent implements OnInit {
 
   beginnerCourses$: Observable<Course[]>;
 
+  beginnerCourse: Course[];
+
   advancedCourses$: Observable<Course[]>;
 
+  advancedCourse: Course[];
 
   constructor(
     private courses: CoursesService, 
@@ -38,9 +41,23 @@ export class HomeComponent implements OnInit {
       );
 
     this.advancedCourses$ = courses$
-    .pipe(
-      map(courses => courses.filter(course => course.category == "ADVANCED"))
-    )
+      .pipe(
+        map(courses => courses.filter(course => course.category == "ADVANCED"))
+      );
+
+      // Lo mismo pero con otra syntax 
+
+    // this.courses.loadAllCourses()
+    // .pipe(
+    //       tap(courses => {
+    //         const arr = courses.filter(course => course.category == "BEGINNER")
+    //         const arr2 = courses.filter(course => course.category == "ADVANCED")
+            
+    //         this.beginnerCourses$ = of(arr)
+    //         this.advancedCourses$ = of(arr2)
+    //       })
+    // ).subscribe()
+
   }
 
   editCourse(course: Course) {
