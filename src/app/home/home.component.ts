@@ -19,35 +19,24 @@ export class HomeComponent implements OnInit {
   constructor(private courses: CoursesService) {}
 
   ngOnInit() {
+    this.reloadCourses();
+  }
 
+  reloadCourses() {
     const courses$ = this.courses.loadAllCourses()
-      .pipe(
-        map(courses => courses.sort(sortCoursesBySeqNo))
-      );
+    .pipe(
+      map(courses => courses.sort(sortCoursesBySeqNo))
+    );
 
-    this.beginnerCourses$ = courses$
-      .pipe(
-        map(courses => courses.filter(course => course.category == "BEGINNER"))
-      );
+  this.beginnerCourses$ = courses$
+    .pipe(
+      map(courses => courses.filter(course => course.category == "BEGINNER"))
+    );
 
     this.advancedCourses$ = courses$
       .pipe(
         map(courses => courses.filter(course => course.category == "ADVANCED"))
-      );
-
-      // Lo mismo pero con otra syntax 
-
-    // this.courses.loadAllCourses()
-    // .pipe(
-    //       tap(courses => {
-    //         const arr = courses.filter(course => course.category == "BEGINNER")
-    //         const arr2 = courses.filter(course => course.category == "ADVANCED")
-            
-    //         this.beginnerCourses$ = of(arr)
-    //         this.advancedCourses$ = of(arr2)
-    //       })
-    // ).subscribe()
-
+    );
   }
 }
 
