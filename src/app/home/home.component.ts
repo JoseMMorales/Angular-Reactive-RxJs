@@ -5,6 +5,7 @@ import {catchError, delay, delayWhen, filter, finalize, map, retryWhen, shareRep
 import { CoursesService } from '../services/courses.services';
 import { LoadingService } from '../loading/loading.service';
 import { MessagesService } from '../messages/messages.service';
+import { CoursesStore } from '../services/courses.store';
 
 
 @Component({
@@ -18,10 +19,20 @@ export class HomeComponent implements OnInit {
 
   advancedCourses$: Observable<Course[]>;
 
-  constructor(
-    private courses: CoursesService, 
-    private loadingService: LoadingService,
-    private messagesService: MessagesService) {}
+  constructor(private coursesStore: CoursesStore) {}
+
+
+    /*
+      Reload courses function is going to be handled by courseStore
+      to control state management and avoiding duplicating same calls
+      to the API
+    */
+  
+    /*
+      private courses: CoursesService, 
+      private loadingService: LoadingService,
+      private messagesService: MessagesService) {}
+    */
 
   ngOnInit() {
     this.reloadCourses();
@@ -32,10 +43,14 @@ export class HomeComponent implements OnInit {
     /* 
       Comments in this function mean one way to add loading 
       functionality for home component when courses are being loaded
+       //this.loadingService.loadingOn();
+       //finalize(() => this.loadingService.loadingOff())
+
     */
 
-    //this.loadingService.loadingOn();
+   
 
+  /*
     const courses$ = this.courses.loadAllCourses()
     .pipe(
       map(courses => courses.sort(sortCoursesBySeqNo)),
@@ -45,7 +60,6 @@ export class HomeComponent implements OnInit {
         console.log(message, err);
         return throwError(err);
       })
-      //finalize(() => this.loadingService.loadingOff())
     );
 
     const loadCourses$ = this.loadingService.showLoaderUntilCompleted(courses$);
@@ -59,6 +73,11 @@ export class HomeComponent implements OnInit {
       .pipe(
         map(courses => courses.filter(course => course.category == "ADVANCED"))
     );
+  */
+
+    this.beginnerCourses$ = this.coursesStore.filterByCategory("BEGINNER");
+
+    this.advancedCourses$ = this.coursesStore.filterByCategory("ADVANCED");
   }
 }
 
