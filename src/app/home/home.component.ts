@@ -28,20 +28,27 @@ export class HomeComponent implements OnInit {
 
   reloadCourses() {
 
-    this.loadingService.loadingOn();
+    /* 
+      Comments in this function mean one way to add loading 
+      functionality for home component when courses are being loaded
+    */
+
+    //this.loadingService.loadingOn();
 
     const courses$ = this.courses.loadAllCourses()
     .pipe(
       map(courses => courses.sort(sortCoursesBySeqNo)),
-      finalize(() => this.loadingService.loadingOff())
+      //finalize(() => this.loadingService.loadingOff())
     );
 
-  this.beginnerCourses$ = courses$
+    const loadCourses$ = this.loadingService.showLoaderUntilCompleted(courses$);
+
+  this.beginnerCourses$ = loadCourses$
     .pipe(
       map(courses => courses.filter(course => course.category == "BEGINNER"))
     );
 
-    this.advancedCourses$ = courses$
+    this.advancedCourses$ = loadCourses$
       .pipe(
         map(courses => courses.filter(course => course.category == "ADVANCED"))
     );
