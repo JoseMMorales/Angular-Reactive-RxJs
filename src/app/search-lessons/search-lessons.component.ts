@@ -29,10 +29,7 @@ export class SearchLessonsComponent implements OnInit {
 
   activeLesson:Lesson;
 
-  constructor(private coursesService: CoursesService) {
-
-
-  }
+  constructor(private coursesService: CoursesService) {}
 
   ngOnInit() {
 
