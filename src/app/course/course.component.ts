@@ -40,6 +40,8 @@ export class CourseComponent implements OnInit {
     const courseId = parseInt(this.route.snapshot.paramMap.get("courseId"));
 
     this.course$ = this.coursesService.loadCourseById(courseId);
+
+    this.lessons$ = this.coursesService.loadAllCourseLessons(courseId);
   }
 
 

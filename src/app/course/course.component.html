@@ -1,29 +1,33 @@
 
   <ng-container *ngIf="(course$ | async) as course">
 
-    <div class="course">
+    <ng-container *ngIf="(lessons$ | async) as lessons">
 
-      <h2>{{course?.description}}</h2>
-  
-      <img class="course-thumbnail" [src]="course?.iconUrl">
-  
-      <table class="lessons-table mat-elevation-z7">
-  
-        <thead>
-        <th>#</th>
-        <th>Description</th>
-        <th>Duration</th>
-        </thead>
-  
-        <!-- <tr class="lesson-row" *ngFor="let lesson of lessons">
-          <td class="seqno-cell">{{lesson.seqNo}}</td>
-          <td class="description-cell">{{lesson.description}}</td>
-          <td class="duration-cell">{{lesson.duration}}</td>
-        </tr> -->
-  
-      </table>
-  
-    </div>  
+      <div class="course">
+
+        <h2>{{course?.description}}</h2>
+    
+        <img class="course-thumbnail" [src]="course?.iconUrl">
+    
+        <table class="lessons-table mat-elevation-z7">
+    
+          <thead>
+          <th>#</th>
+          <th>Description</th>
+          <th>Duration</th>
+          </thead>
+    
+          <tr class="lesson-row" *ngFor="let lesson of lessons">
+            <td class="seqno-cell">{{lesson.seqNo}}</td>
+            <td class="description-cell">{{lesson.description}}</td>
+            <td class="duration-cell">{{lesson.duration}}</td>
+          </tr>
+    
+        </table>
+    
+      </div>  
+
+    </ng-container>
 
   </ng-container>
   
